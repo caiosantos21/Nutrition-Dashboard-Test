@@ -1,0 +1,27 @@
+{
+  "expo": {
+    "name": "NutriTrack",
+    "slug": "nutrition-dashboard-expo",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "userInterfaceStyle": "light",
+    "backgroundColor": "#E6F4E6",
+    "splash": {
+      "backgroundColor": "#E6F4E6"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.caioalmeida.nutritiondashboard"
+    },
+    "android": {
+      "package": "com.caioalmeida.nutritiondashboard",
+      "adaptiveIcon": {
+        "backgroundColor": "#E6F4E6"
+      }
+    },
+    "web": {
+      "bundler": "metro"
+    }
+  }
+}
