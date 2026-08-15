@@ -1,13 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { Meal } from '../types/nutrition';
 import { colors, radius, spacing, typography } from '../theme/theme';
+import { confirmDelete } from '../utils/confirmDelete';
 
 interface MealCardProps {
   meal: Meal;
+  onDelete?: (id: string) => void;
 }
 
-export const MealCard: React.FC<MealCardProps> = ({ meal }) => {
+export const MealCard: React.FC<MealCardProps> = ({ meal, onDelete }) => {
+  const handleDelete = () => {
+    if (onDelete) {
+      confirmDelete(meal.title, () => onDelete(meal.id));
+    }
+  };
+
   return (
     <View style={styles.card}>
       <View style={styles.textColumn}>
@@ -18,7 +26,14 @@ export const MealCard: React.FC<MealCardProps> = ({ meal }) => {
           </Text>
         ))}
       </View>
-      <Text style={styles.kcal}>{meal.kcal} kcal</Text>
+      <View style={styles.rightColumn}>
+        <Text style={styles.kcal}>{meal.kcal} kcal</Text>
+        {onDelete && (
+          <TouchableOpacity onPress={handleDelete} hitSlop={8} style={styles.deleteButton}>
+            <Text style={styles.deleteIcon}>✕</Text>
+          </TouchableOpacity>
+        )}
+      </View>
     </View>
   );
 };
@@ -47,8 +62,18 @@ const styles = StyleSheet.create({
     ...typography.mealSubItem,
     color: colors.textSecondary,
   },
+  rightColumn: {
+    alignItems: 'flex-end',
+  },
   kcal: {
     ...typography.mealKcal,
     color: colors.textPrimary,
+  },
+  deleteButton: {
+    marginTop: spacing.sm,
+  },
+  deleteIcon: {
+    fontSize: 14,
+    color: colors.textMuted,
   },
 });

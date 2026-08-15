@@ -41,6 +41,23 @@ export interface SettingItem {
   value?: string;
 }
 
+export type Units = 'Metric' | 'Imperial';
+
+export interface AppSettings {
+  dailyCalorieGoal: number;
+  proteinGoal: number;
+  carbsGoal: number;
+  fatGoal: number;
+  units: Units;
+}
+
+export interface DailyConsumption {
+  kcalConsumed: number;
+  proteinConsumed: number;
+  carbsConsumed: number;
+  fatConsumed: number;
+}
+
 export type TabKey = 'today' | 'history' | 'foods' | 'settings';
 
 export interface TabItem {

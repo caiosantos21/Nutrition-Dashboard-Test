@@ -1,14 +1,27 @@
-import { DailySummary, FoodItem, HistoryEntry, Meal, SettingItem, TabItem } from '../types/nutrition';
+import { AppSettings, DailyConsumption, FoodItem, HistoryEntry, Meal, TabItem } from '../types/nutrition';
 
-export const dailySummary: DailySummary = {
+/**
+ * Estes valores são apenas o estado INICIAL do app (seed).
+ * O estado real e mutável (adicionar/remover refeição, editar metas, etc.)
+ * vive em `AppDataContext`, não aqui.
+ */
+
+export const initialConsumption: DailyConsumption = {
   kcalConsumed: 1500,
-  kcalGoal: 2000,
-  protein: { label: 'Protein', current: 80, goal: 120, unit: 'g' },
-  carbs: { label: 'Carbs', current: 200, goal: 250, unit: 'g' },
-  fat: { label: 'Fat', current: 50, goal: 70, unit: 'g' },
+  proteinConsumed: 80,
+  carbsConsumed: 200,
+  fatConsumed: 50,
 };
 
-export const meals: Meal[] = [
+export const defaultSettings: AppSettings = {
+  dailyCalorieGoal: 2000,
+  proteinGoal: 120,
+  carbsGoal: 250,
+  fatGoal: 70,
+  units: 'Metric',
+};
+
+export const initialMeals: Meal[] = [
   {
     id: '1',
     title: 'Oatmeal with berries',
@@ -23,11 +36,13 @@ export const meals: Meal[] = [
   },
 ];
 
-export const tabs: TabItem[] = [
-  { key: 'today', label: 'TODAY' },
-  { key: 'history', label: 'HISTORY' },
-  { key: 'foods', label: 'FOODS' },
-  { key: 'settings', label: 'SETTINGS' },
+export const initialFoods: FoodItem[] = [
+  { id: '1', name: 'Oatmeal with berries', kcalPerServing: 280, servingSize: '1 bowl' },
+  { id: '2', name: 'Grilled Chicken Breast', kcalPerServing: 231, servingSize: '100 g' },
+  { id: '3', name: 'Whole Wheat Bread', kcalPerServing: 81, servingSize: '1 slice' },
+  { id: '4', name: 'Almonds', kcalPerServing: 164, servingSize: '28 g' },
+  { id: '5', name: '2% Milk', kcalPerServing: 122, servingSize: '1 cup' },
+  { id: '6', name: 'Olive Oil Dressing', kcalPerServing: 119, servingSize: '1 tbsp' },
 ];
 
 export const historyEntries: HistoryEntry[] = [
@@ -38,22 +53,9 @@ export const historyEntries: HistoryEntry[] = [
   { id: '5', date: 'Jan 28', weekday: 'Wednesday', kcalConsumed: 1620, kcalGoal: 2000 },
 ];
 
-export const savedFoods: FoodItem[] = [
-  { id: '1', name: 'Oatmeal with berries', kcalPerServing: 280, servingSize: '1 bowl' },
-  { id: '2', name: 'Grilled Chicken Breast', kcalPerServing: 231, servingSize: '100 g' },
-  { id: '3', name: 'Whole Wheat Bread', kcalPerServing: 81, servingSize: '1 slice' },
-  { id: '4', name: 'Almonds', kcalPerServing: 164, servingSize: '28 g' },
-  { id: '5', name: '2% Milk', kcalPerServing: 122, servingSize: '1 cup' },
-  { id: '6', name: 'Olive Oil Dressing', kcalPerServing: 119, servingSize: '1 tbsp' },
-];
-
-export const settingsItems: SettingItem[] = [
-  { id: '1', label: 'Daily Calorie Goal', value: '2000 kcal' },
-  { id: '2', label: 'Protein Goal', value: '120 g' },
-  { id: '3', label: 'Carbs Goal', value: '250 g' },
-  { id: '4', label: 'Fat Goal', value: '70 g' },
-  { id: '5', label: 'Units', value: 'Metric' },
-  { id: '6', label: 'Notifications', value: 'On' },
-  { id: '7', label: 'Account' },
-  { id: '8', label: 'About NutriTrack' },
+export const tabs: TabItem[] = [
+  { key: 'today', label: 'TODAY' },
+  { key: 'history', label: 'HISTORY' },
+  { key: 'foods', label: 'FOODS' },
+  { key: 'settings', label: 'SETTINGS' },
 ];

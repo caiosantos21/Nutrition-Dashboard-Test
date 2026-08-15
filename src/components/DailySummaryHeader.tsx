@@ -1,34 +1,26 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 import { DailySummary } from '../types/nutrition';
 import { CircularProgress } from './CircularProgress';
 import { MacroBar } from './MacroBar';
 import { ProgressTrack } from './ProgressTrack';
 import { colors, spacing, typography } from '../theme/theme';
+import { formatHeaderDate } from '../utils/date';
 
 interface DailySummaryHeaderProps {
   summary: DailySummary;
-  currentTime: string;
-  currentDate: string;
 }
 
-export const DailySummaryHeader: React.FC<DailySummaryHeaderProps> = ({
-  summary,
-  currentTime,
-  currentDate,
-}) => {
+export const DailySummaryHeader: React.FC<DailySummaryHeaderProps> = ({ summary }) => {
   const kcalLeft = summary.kcalGoal - summary.kcalConsumed;
   const progress = summary.kcalConsumed / summary.kcalGoal;
   const progressPercent = Math.round(progress * 100);
+  // Data calculada em tempo real — o horário fica a cargo da barra de status do sistema.
+  const currentDate = useMemo(() => formatHeaderDate(), []);
 
   return (
     <View style={styles.container}>
-      <View style={styles.topRow}>
-        <View>
-          <Text style={styles.time}>{currentTime}</Text>
-          <Text style={styles.date}>{currentDate}</Text>
-        </View>
-      </View>
+      <Text style={styles.date}>{currentDate}</Text>
 
       <View style={styles.logoRow}>
         <Text style={styles.logo}>NutriTrack</Text>
@@ -73,17 +65,10 @@ const styles = StyleSheet.create({
     paddingTop: spacing.lg,
     paddingBottom: spacing.xl,
   },
-  topRow: {
-    marginBottom: spacing.md,
-  },
-  time: {
-    fontSize: 14,
-    fontWeight: '600',
-    color: colors.textPrimary,
-  },
   date: {
     fontSize: 12,
     color: colors.textSecondary,
+    marginBottom: spacing.md,
   },
   logoRow: {
     flexDirection: 'row',

@@ -75,4 +75,38 @@ App.tsx             → entry point, injeta SafeAreaProvider + AppShell
   JSX entre macros, listas (History/Foods/Settings) e botões.
 - Navegação simples por estado (`AppShell`), sem dependência de lib de rotas —
   fácil de trocar depois por React Navigation se o app crescer.
-- Dados mockados isolados em `src/data`, prontos para virar uma camada de API.
+- Dados mockados isolados em `src/data`, servindo apenas como estado **inicial**.
+
+## Estado editável (Context)
+
+Todo o estado que pode ser alterado pelo usuário (refeições, alimentos salvos,
+metas diárias e unidade) vive em `src/context/AppDataContext.tsx`, acessado
+via o hook `useAppData()`. Nenhuma tela guarda cópia própria dos dados —
+todas leem e escrevem através do context.
+
+## Modais (`src/components/modals`)
+
+- `AppModal` — casca genérica (backdrop + card + título + fechar), usada por todos os outros.
+- `FormField` — label + input padronizado, usado nos formulários.
+- `AddMealModal` — adicionar refeição (nome, ingredientes, kcal).
+- `AddFoodModal` — adicionar alimento salvo (nome, porção, kcal).
+- `EditGoalModal` — genérico, reaproveitado pelas 4 metas de Settings.
+- `SelectModal` — seleção única genérica, usada hoje para trocar "Units".
+- `AboutModal` — conteúdo estático de "About NutriTrack".
+
+## Exclusão de itens
+
+`MealCard` e `InfoRow` aceitam uma prop `onDelete`. Ao tocar no ícone "✕",
+é exibido um `Alert` de confirmação (`src/utils/confirmDelete.ts`) antes de
+remover o item do context.
+
+## Ajustes de correção
+
+- **Sobreposição com a barra de navegação do Android**: corrigido fazendo o
+  `SafeAreaView` do `AppShell` respeitar `edges={['top', 'bottom']}`, então
+  os botões "LOG FOOD" e "Add Food" não ficam mais atrás dos botões de
+  gesto/navegação do sistema.
+- **Horário fixo removido**: o relógio já aparece na barra de status do
+  Android, então foi retirado do header do app.
+- **Data dinâmica**: `src/utils/date.ts` calcula a data atual real (`SAT, AUG 15`,
+  por exemplo) em vez do valor fixo `SUN, FEB 1`.

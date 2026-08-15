@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { colors, radius, spacing, typography } from '../theme/theme';
+import { confirmDelete } from '../utils/confirmDelete';
 
 interface InfoRowProps {
   title: string;
@@ -8,6 +9,7 @@ interface InfoRowProps {
   rightText?: string;
   showChevron?: boolean;
   onPress?: () => void;
+  onDelete?: () => void;
 }
 
 /**
@@ -21,8 +23,15 @@ export const InfoRow: React.FC<InfoRowProps> = ({
   rightText,
   showChevron,
   onPress,
+  onDelete,
 }) => {
   const Wrapper = onPress ? TouchableOpacity : View;
+
+  const handleDelete = () => {
+    if (onDelete) {
+      confirmDelete(title, onDelete);
+    }
+  };
 
   return (
     <Wrapper style={styles.card} onPress={onPress} activeOpacity={0.7}>
@@ -33,6 +42,11 @@ export const InfoRow: React.FC<InfoRowProps> = ({
       <View style={styles.rightColumn}>
         {rightText && <Text style={styles.rightText}>{rightText}</Text>}
         {showChevron && <Text style={styles.chevron}>›</Text>}
+        {onDelete && (
+          <TouchableOpacity onPress={handleDelete} hitSlop={8} style={styles.deleteButton}>
+            <Text style={styles.deleteIcon}>✕</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </Wrapper>
   );
@@ -75,5 +89,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: colors.textMuted,
     marginLeft: spacing.sm,
+  },
+  deleteButton: {
+    marginLeft: spacing.md,
+  },
+  deleteIcon: {
+    fontSize: 14,
+    color: colors.textMuted,
   },
 });

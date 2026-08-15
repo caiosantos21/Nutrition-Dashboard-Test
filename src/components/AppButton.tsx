@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
+import { StyleProp, StyleSheet, Text, TouchableOpacity, View, ViewStyle } from 'react-native';
 import { colors, radius, spacing, typography } from '../theme/theme';
 
 interface AppButtonProps {
@@ -7,7 +7,7 @@ interface AppButtonProps {
   onPress?: () => void;
   variant?: 'solid' | 'outline';
   icon?: React.ReactNode;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
 }
 
 /**
