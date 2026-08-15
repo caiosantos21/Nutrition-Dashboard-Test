@@ -6,10 +6,13 @@ import { confirmDelete } from '../utils/confirmDelete';
 
 interface MealCardProps {
   meal: Meal;
+  onPress?: (meal: Meal) => void;
   onDelete?: (id: string) => void;
 }
 
-export const MealCard: React.FC<MealCardProps> = ({ meal, onDelete }) => {
+export const MealCard: React.FC<MealCardProps> = ({ meal, onPress, onDelete }) => {
+  const Wrapper = onPress ? TouchableOpacity : View;
+
   const handleDelete = () => {
     if (onDelete) {
       confirmDelete(meal.title, () => onDelete(meal.id));
@@ -17,12 +20,12 @@ export const MealCard: React.FC<MealCardProps> = ({ meal, onDelete }) => {
   };
 
   return (
-    <View style={styles.card}>
+    <Wrapper style={styles.card} onPress={() => onPress?.(meal)} activeOpacity={0.7}>
       <View style={styles.textColumn}>
         <Text style={styles.title}>{meal.title}</Text>
-        {meal.items.map((item) => (
-          <Text key={item} style={styles.item}>
-            {item}
+        {meal.foods.map((food) => (
+          <Text key={food.foodId} style={styles.item}>
+            {food.name}
           </Text>
         ))}
       </View>
@@ -34,7 +37,7 @@ export const MealCard: React.FC<MealCardProps> = ({ meal, onDelete }) => {
           </TouchableOpacity>
         )}
       </View>
-    </View>
+    </Wrapper>
   );
 };
 

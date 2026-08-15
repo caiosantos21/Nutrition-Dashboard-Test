@@ -1,4 +1,11 @@
-import { AppSettings, DailyConsumption, FoodItem, HistoryEntry, Meal, TabItem } from '../types/nutrition';
+import {
+  AppSettings,
+  FoodItem,
+  HistoryEntry,
+  MacroConsumption,
+  Meal,
+  TabItem,
+} from '../types/nutrition';
 
 /**
  * Estes valores são apenas o estado INICIAL do app (seed).
@@ -6,8 +13,8 @@ import { AppSettings, DailyConsumption, FoodItem, HistoryEntry, Meal, TabItem } 
  * vive em `AppDataContext`, não aqui.
  */
 
-export const initialConsumption: DailyConsumption = {
-  kcalConsumed: 1500,
+/** kcal consumido é derivado da soma das refeições no context — não é seed. */
+export const initialMacroConsumption: MacroConsumption = {
   proteinConsumed: 80,
   carbsConsumed: 200,
   fatConsumed: 50,
@@ -21,21 +28,6 @@ export const defaultSettings: AppSettings = {
   units: 'Metric',
 };
 
-export const initialMeals: Meal[] = [
-  {
-    id: '1',
-    title: 'Oatmeal with berries',
-    items: ['2% Milk', 'Almonds'],
-    kcal: 380,
-  },
-  {
-    id: '2',
-    title: 'Grilled Chicken Salad',
-    items: ['Whole Wheat Bread', 'Olive Oil Dressing'],
-    kcal: 450,
-  },
-];
-
 export const initialFoods: FoodItem[] = [
   { id: '1', name: 'Oatmeal with berries', kcalPerServing: 280, servingSize: '1 bowl' },
   { id: '2', name: 'Grilled Chicken Breast', kcalPerServing: 231, servingSize: '100 g' },
@@ -43,6 +35,30 @@ export const initialFoods: FoodItem[] = [
   { id: '4', name: 'Almonds', kcalPerServing: 164, servingSize: '28 g' },
   { id: '5', name: '2% Milk', kcalPerServing: 122, servingSize: '1 cup' },
   { id: '6', name: 'Olive Oil Dressing', kcalPerServing: 119, servingSize: '1 tbsp' },
+];
+
+// Refeições iniciais montadas a partir dos próprios alimentos cadastrados acima,
+// já no novo formato (lista de MealFoodEntry em vez de texto livre).
+export const initialMeals: Meal[] = [
+  {
+    id: '1',
+    title: 'Oatmeal with berries',
+    foods: [
+      { foodId: '5', name: '2% Milk', kcal: 122 },
+      { foodId: '4', name: 'Almonds', kcal: 164 },
+    ],
+    kcal: 286,
+  },
+  {
+    id: '2',
+    title: 'Grilled Chicken Salad',
+    foods: [
+      { foodId: '2', name: 'Grilled Chicken Breast', kcal: 231 },
+      { foodId: '3', name: 'Whole Wheat Bread', kcal: 81 },
+      { foodId: '6', name: 'Olive Oil Dressing', kcal: 119 },
+    ],
+    kcal: 431,
+  },
 ];
 
 export const historyEntries: HistoryEntry[] = [

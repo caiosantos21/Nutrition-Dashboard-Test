@@ -110,3 +110,29 @@ remover o item do context.
   Android, então foi retirado do header do app.
 - **Data dinâmica**: `src/utils/date.ts` calcula a data atual real (`SAT, AUG 15`,
   por exemplo) em vez do valor fixo `SUN, FEB 1`.
+
+## Refeições ligadas aos alimentos cadastrados (2ª rodada de ajustes)
+
+- `kcal consumido` do tracker agora é **derivado**: soma real dos `kcal` de
+  todas as refeições do dia (nada de valor fixo). Qualquer alteração na
+  lista de refeições atualiza o anel/resumo do header automaticamente.
+- `Meal.foods` substitui o antigo `Meal.items` (texto livre): cada refeição
+  guarda uma lista de `MealFoodEntry` (`foodId`, `name`, `kcal`), sempre
+  originada dos alimentos cadastrados na aba Foods.
+- **`MealFormModal`** (substitui o antigo `AddMealModal`) cobre tanto criar
+  quanto editar uma refeição:
+  - lista os alimentos salvos com um seletor tipo checklist (`ToggleRow`);
+  - calcula o total de kcal automaticamente pela soma dos itens marcados;
+  - calcula quanto ainda resta da meta diária (excluindo a própria refeição
+    quando em modo de edição, para não descontá-la duas vezes);
+  - bloqueia o botão de salvar e mostra uma mensagem de erro em vermelho se
+    o total ultrapassar o restante da meta diária.
+  - tocar em um card de refeição (`MealCard`) abre esse mesmo modal em modo
+    de edição, já com os alimentos atuais marcados.
+- **Metas em Settings**: `Protein/Carbs/Fat Goal` agora exibem a unidade
+  conforme `Units` (g para Metric, oz para Imperial) — **sem conversão de
+  valor**, só troca do rótulo, por decisão de produto. `Daily Calorie Goal`
+  continua sempre em `kcal`. Isso é resolvido por `src/utils/units.ts`
+  (`getWeightUnit`).
+- Qualquer edição de meta em Settings já reflete imediatamente no header
+  (Today), pois tudo lê do mesmo `AppDataContext`.

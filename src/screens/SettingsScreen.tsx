@@ -7,20 +7,22 @@ import { SelectModal } from '../components/modals/SelectModal';
 import { AboutModal } from '../components/modals/AboutModal';
 import { useAppData } from '../context/AppDataContext';
 import { AppSettings } from '../types/nutrition';
+import { getWeightUnit } from '../utils/units';
 
 type GoalKey = keyof Omit<AppSettings, 'units'>;
 
 interface GoalRowConfig {
   key: GoalKey;
   label: string;
-  unit: string;
+  /** Metas de peso (protein/carbs/fat) trocam de rótulo com Metric/Imperial; kcal não. */
+  isWeightGoal: boolean;
 }
 
 const GOAL_ROWS: GoalRowConfig[] = [
-  { key: 'dailyCalorieGoal', label: 'Daily Calorie Goal', unit: 'kcal' },
-  { key: 'proteinGoal', label: 'Protein Goal', unit: 'g' },
-  { key: 'carbsGoal', label: 'Carbs Goal', unit: 'g' },
-  { key: 'fatGoal', label: 'Fat Goal', unit: 'g' },
+  { key: 'dailyCalorieGoal', label: 'Daily Calorie Goal', isWeightGoal: false },
+  { key: 'proteinGoal', label: 'Protein Goal', isWeightGoal: true },
+  { key: 'carbsGoal', label: 'Carbs Goal', isWeightGoal: true },
+  { key: 'fatGoal', label: 'Fat Goal', isWeightGoal: true },
 ];
 
 const UNIT_OPTIONS = ['Metric', 'Imperial'];
@@ -31,6 +33,9 @@ export const SettingsScreen: React.FC = () => {
   const [isUnitsVisible, setUnitsVisible] = useState(false);
   const [isAboutVisible, setAboutVisible] = useState(false);
 
+  const weightUnit = getWeightUnit(settings.units);
+  const unitFor = (row: GoalRowConfig) => (row.isWeightGoal ? weightUnit : 'kcal');
+
   return (
     <ScreenContainer>
       <SectionTitle>PREFERENCES</SectionTitle>
@@ -39,7 +44,7 @@ export const SettingsScreen: React.FC = () => {
         <InfoRow
           key={row.key}
           title={row.label}
-          rightText={`${settings[row.key]} ${row.unit}`}
+          rightText={`${settings[row.key]} ${unitFor(row)}`}
           showChevron
           onPress={() => setEditingGoal(row)}
         />
@@ -58,7 +63,7 @@ export const SettingsScreen: React.FC = () => {
         <EditGoalModal
           visible={!!editingGoal}
           label={editingGoal.label}
-          unit={editingGoal.unit}
+          unit={unitFor(editingGoal)}
           currentValue={settings[editingGoal.key]}
           onClose={() => setEditingGoal(null)}
           onSave={(value) => updateGoal(editingGoal.key, value)}

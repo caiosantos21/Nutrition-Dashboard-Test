@@ -13,10 +13,16 @@ export interface DailySummary {
   fat: MacroNutrient;
 }
 
+export interface MealFoodEntry {
+  foodId: string;
+  name: string;
+  kcal: number;
+}
+
 export interface Meal {
   id: string;
   title: string;
-  items: string[];
+  foods: MealFoodEntry[];
   kcal: number;
 }
 
@@ -51,8 +57,8 @@ export interface AppSettings {
   units: Units;
 }
 
-export interface DailyConsumption {
-  kcalConsumed: number;
+/** Consumo de macros ainda mockado (não há quebra de macro por alimento). */
+export interface MacroConsumption {
   proteinConsumed: number;
   carbsConsumed: number;
   fatConsumed: number;

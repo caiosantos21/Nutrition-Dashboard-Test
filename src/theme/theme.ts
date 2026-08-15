@@ -16,6 +16,8 @@ export const colors = {
   border: '#E5E7E5',
   progressTrack: '#D9E8D9',
   white: '#FFFFFF',
+  error: '#D64545',
+  errorBackground: '#FBEAEA',
 } as const;
 
 export const spacing = {
